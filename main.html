@@ -3,90 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <title>Speech Synthesis</title>
-  <link href='https://fonts.googleapis.com/css?family=Pacifico' rel='stylesheet' type='text/css'>
+  <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet" type="text/css">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="voiceinator">
+  <div class="voiceinator">
+    <h1>The Voiceinator 5000</h1>
 
-      <h1>The Voiceinator 5000</h1>
+    <select name="voice" id="voices">
+      <option value="">Select A Voice</option>
+    </select>
 
-      <select name="voice" id="voices">
-        <option value="">Select A Voice</option>
-      </select>
+    <label for="rate">Rate:</label>
+    <input id="rate" name="rate" type="range" min="0" max="3" value="1" step="0.1">
+    <span id="rate-value">1</span>
 
-      <label for="rate">Rate:</label>
-      <input name="rate" type="range" min="0" max="3" value="1" step="0.1">
+    <label for="pitch">Pitch:</label>
+    <input id="pitch" name="pitch" type="range" min="0" max="2" step="0.1" value="1">
+    <span id="pitch-value">1</span>
 
-      <label for="pitch">Pitch:</label>
+    <textarea id="text-input" name="text">Hello! I love JavaScript 👍</textarea>
+    <button id="stop">Stop!</button>
+    <button id="speak-button">Speak</button>
+  </div>
 
-      <input name="pitch" type="range" min="0" max="2" step="0.1">
-      <textarea name="text">Hello! I love JavaScript 👍</textarea>
-      <button id="stop">Stop!</button>
-      <button id="speak">Speak</button>
-
-    </div>
-
-<script>
-  const msg = new SpeechSynthesisUtterance();
-  let voices = [];
-  const voicesDropdown = document.querySelector('[name="voice"]');
-  const options = document.querySelectorAll('[type="range"], [name="text"]');
-  const speakButton = document.querySelector('#speak');
-  const stopButton = document.querySelector('#stop');
-
-  //Your code goes here
-	 // ✅ Load available voices
-  function populateVoices() {
-    voices = speechSynthesis.getVoices();
-    voicesDropdown.innerHTML = voices
-      .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`)
-      .join('');
-  }
-
-  // ✅ Set selected voice
-  function setVoice() {
-    msg.voice = voices.find(voice => voice.name === this.value);
-  }
-
-  // ✅ Speak button
-  speakButton.addEventListener('click', () => {
-    const textInput = document.getElementById('text-input').value;
-    const pitch = document.getElementById('pitch').value;
-    const rate = document.getElementById('rate').value;
-
-    if (textInput) {
-      const utterance = new SpeechSynthesisUtterance(textInput);
-      utterance.pitch = pitch;
-      utterance.rate = rate;
-      utterance.voice = msg.voice || null;
-      speechSynthesis.speak(utterance);
-    } else {
-      alert('Please enter some text to speak.');
-    }
-  });
-
-  // ✅ Stop button
-  stopButton.addEventListener('click', () => {
-    speechSynthesis.cancel();
-  });
-
-  // ✅ Update live values
-  document.getElementById('pitch').addEventListener('input', (e) => {
-    document.getElementById('pitch-value').textContent = e.target.value;
-  });
-
-  document.getElementById('rate').addEventListener('input', (e) => {
-    document.getElementById('rate-value').textContent = e.target.value;
-  });
-
-  // ✅ Voice dropdown
-  speechSynthesis.addEventListener('voiceschanged', populateVoices);
-  voicesDropdown.addEventListener('change', setVoice);
-	
-	
-</script>
-
-</body>
-</html>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const voicesDropdown = document.getElementById('voices');
+      const speakButton = document.getElementById('speak-button');
+      const stopButton = document.getElementById('stop');
+      const textInput = document.getElementById('text-input');
+      const pitchInput = document.getElementById('pitch');
+      const pitchValue = document.getElementById('pitch-value');
+      const rateInput = document.getElementById('
