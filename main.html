@@ -37,6 +37,55 @@
   const stopButton = document.querySelector('#stop');
 
   //Your code goes here
+	 // ✅ Load available voices
+  function populateVoices() {
+    voices = speechSynthesis.getVoices();
+    voicesDropdown.innerHTML = voices
+      .map(voice => `<option value="${voice.name}">${voice.name} (${voice.lang})</option>`)
+      .join('');
+  }
+
+  // ✅ Set selected voice
+  function setVoice() {
+    msg.voice = voices.find(voice => voice.name === this.value);
+  }
+
+  // ✅ Speak button
+  speakButton.addEventListener('click', () => {
+    const textInput = document.getElementById('text-input').value;
+    const pitch = document.getElementById('pitch').value;
+    const rate = document.getElementById('rate').value;
+
+    if (textInput) {
+      const utterance = new SpeechSynthesisUtterance(textInput);
+      utterance.pitch = pitch;
+      utterance.rate = rate;
+      utterance.voice = msg.voice || null;
+      speechSynthesis.speak(utterance);
+    } else {
+      alert('Please enter some text to speak.');
+    }
+  });
+
+  // ✅ Stop button
+  stopButton.addEventListener('click', () => {
+    speechSynthesis.cancel();
+  });
+
+  // ✅ Update live values
+  document.getElementById('pitch').addEventListener('input', (e) => {
+    document.getElementById('pitch-value').textContent = e.target.value;
+  });
+
+  document.getElementById('rate').addEventListener('input', (e) => {
+    document.getElementById('rate-value').textContent = e.target.value;
+  });
+
+  // ✅ Voice dropdown
+  speechSynthesis.addEventListener('voiceschanged', populateVoices);
+  voicesDropdown.addEventListener('change', setVoice);
+	
+	
 </script>
 
 </body>
